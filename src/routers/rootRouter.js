@@ -5,6 +5,8 @@ import {
   postJoin,
   getLogin,
   postLogin,
+  postLogout,
+  getLogout,
 } from "../controllers/userController";
 
 const rootRouter = express.Router();
@@ -12,6 +14,7 @@ const rootRouter = express.Router();
 rootRouter.get("/", home);
 rootRouter.route("/join").get(getJoin).post(postJoin);
 rootRouter.route("/login").get(getLogin).post(postLogin);
+rootRouter.route("/logout").get(getLogout).post(postLogout);
 rootRouter.get("/search", search);
 
 export default rootRouter;
