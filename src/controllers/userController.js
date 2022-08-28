@@ -37,7 +37,7 @@ export const getLogin = (req, res) =>
 
 export const postLogin = async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username, socialOnly: false });
   let ok;
   if (user) ok = await bcrypt.compare(password, user.password);
   if (!user || !ok)
@@ -47,7 +47,6 @@ export const postLogin = async (req, res) => {
     });
   req.session.loggedIn = true;
   req.session.user = user;
-  console.log(req.session);
   return res.redirect("/");
 };
 
@@ -92,7 +91,7 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log(userData);
+
     const emailData = await (
       await fetch(`${apiUrl}user/emails`, {
         headers: {
@@ -100,19 +99,66 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log(emailData);
-  } else {
-    return res.redirect("login");
-  }
+    const emailObj = emailData.find(
+      (email) => email.primary === true && email.verified === true
+    );
+    if (!emailObj) return res.redirect("/login");
+    const user = await User.findOne({ email: emailObj.email });
+    if (!user) {
+      user = await User.create({
+        avatarUrl: userData.avatar_url,
+        name: userData.name ? userData.name : "Unknown",
+        username: userData.login,
+        email: emailObj.email,
+        password: " ",
+        socialonly: true,
+        location: userData.location,
+      });
+    }
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
+  } else return res.redirect("login");
 };
 
-export const edit = (req, res) => res.render("Edit User");
-export const remove = (req, res) => res.render("Delete User");
-export const postLogout = (req, res) => {
-  req.session.loggedIn = false;
-  req.session.user = undefined;
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id, email: sessionEmail, username: sessionUsername },
+    },
+    body: { name, email, username, location },
+  } = req;
+  if (username != sessionUsername || email != sessionEmail) {
+    const usernameExists = await User.exists({ username });
+    const emailExists = await User.exists({ email });
+    if (usernameExists || emailExists) {
+      return res.status(400).render("edit-profile", {
+        pageTitle: "Edit Profile",
+        usernameErrorMessage: usernameExists
+          ? "This username is already taken"
+          : null,
+        emailErrorMessage: emailExists ? "This email is already taken" : null,
+      });
+    }
+  }
+  const updateUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+  req.session.user = updateUser;
+  return res.redirect("/users/edit");
+};
+
+export const logout = (req, res) => {
+  req.session.destroy();
   return res.redirect("/");
 };
-export const getLogout = (req, res) => res.redirect("/");
-
-export const see = (req, res) => res.render("See User");

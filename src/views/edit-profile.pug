@@ -1,0 +1,13 @@
+extends base
+
+block content 
+    form(method="POST")
+        input(placeholder="Name", name="name", type="Name", required, value=loggedInUser.name)
+        if emailErrorMessage
+            h3=emailErrorMessage
+        input(placeholder="email",name="email", type="email", required, value=loggedInUser.email)
+        if usernameErrorMessage
+            h3=usernameErrorMessage
+        input(placeholder="Username", name="username", type="text", required, value=loggedInUser.username)
+        input(placeholder="Location", name="location", type="text", required, value=loggedInUser.location)
+        input(type="submit", value="Update Profile")
