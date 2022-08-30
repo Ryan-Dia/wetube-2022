@@ -1,4 +1,5 @@
 import User from "../models/User";
+import Video from "../models/Video";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
@@ -12,15 +13,18 @@ export const postJoin = async (req, res) => {
   const usernameExists = await User.exists({ username });
   const emailExists = await User.exists({ email });
   if (usernameExists || emailExists || password !== passwordConfirm) {
-    console.log(password, passwordConfirm);
     return res.render("join", {
       pageTitle: "join",
       userErrorMessage: usernameExists
         ? "This username is already taken"
-        : null,
-      emailErrorMessage: emailExists ? "This Email is already taken" : null,
+        : undefined,
+      emailErrorMessage: emailExists
+        ? "This Email is already taken"
+        : undefined,
       passwordErrorMessage:
-        password !== passwordConfirm ? "Both passwords do not match." : null,
+        password !== passwordConfirm
+          ? "Both passwords do not match."
+          : undefined,
     });
   }
   await User.create({
@@ -32,6 +36,9 @@ export const postJoin = async (req, res) => {
   });
   return res.redirect("/login");
 };
+
+/////////////
+
 export const getLogin = (req, res) =>
   res.render("Login", { pageTitle: "Login" });
 
@@ -49,6 +56,8 @@ export const postLogin = async (req, res) => {
   req.session.user = user;
   return res.redirect("/");
 };
+
+/////////////////////
 
 export const startGihubLogin = (req, res) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
@@ -103,16 +112,16 @@ export const finishGithubLogin = async (req, res) => {
       (email) => email.primary === true && email.verified === true
     );
     if (!emailObj) return res.redirect("/login");
-    const user = await User.findOne({ email: emailObj.email });
+    let user = await User.findOne({ email: emailObj.email });
     if (!user) {
       user = await User.create({
-        avatarUrl: userData.avatar_url,
+        avatarUrl: userData.avatar_url ? userData.avatar_url : "undefined",
         name: userData.name ? userData.name : "Unknown",
         username: userData.login,
         email: emailObj.email,
         password: " ",
-        socialonly: true,
-        location: userData.location,
+        socialOnly: true,
+        location: userData.location ? userData.location : "UnKnown",
       });
     }
     req.session.loggedIn = true;
@@ -120,6 +129,8 @@ export const finishGithubLogin = async (req, res) => {
     return res.redirect("/");
   } else return res.redirect("login");
 };
+
+////////////////
 
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
@@ -130,6 +141,7 @@ export const postEdit = async (req, res) => {
       user: { _id, email: sessionEmail, username: sessionUsername },
     },
     body: { name, email, username, location },
+    file,
   } = req;
   const usernameExists =
     username != sessionUsername ? await User.exists({ username }) : undefined;
@@ -148,6 +160,7 @@ export const postEdit = async (req, res) => {
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
+      avatarUrl: file ? file.path : avatarUrl,
       name,
       email,
       username,
@@ -159,7 +172,55 @@ export const postEdit = async (req, res) => {
   return res.redirect("/users/edit");
 };
 
+///////////////////////
+
 export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
+};
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) return res.redirect("/");
+  return res.render("users/change-password", { pageTitle: "Change password" });
+};
+
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id, password },
+    },
+    body: { oldPassword, newPassword, newPasswordConfirmation },
+  } = req;
+  console.log(_id);
+  console.log(password);
+  const ok = await bcrypt.compare(oldPassword, password);
+  console.log(ok);
+  if (!ok) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The current password is incorrect",
+    });
+  }
+  if (newPassword !== newPasswordConfirmation) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The password does not match",
+    });
+  }
+  const user = await User.findById(_id);
+  user.password = await User.hashPassword(newPassword);
+  await user.save();
+  req.session.destroy();
+  return res.redirect("/login");
+};
+
+export const see = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id).populate("videos");
+  if (!user)
+    return res.status(404).render("404", { pageTitle: "User not found" });
+  return res.render("users/profile", {
+    pageTitle: user.name,
+    user,
+  });
 };

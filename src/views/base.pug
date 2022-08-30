@@ -6,6 +6,7 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title #{pageTitle}  | Wetube
         link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+        link(rel="stylesheet", href="/static/css/styles.css")
     body
         header
             nav
@@ -15,6 +16,8 @@ html(lang="en")
                     if loggedIn
                         li 
                             a(href="/videos/upload") Upload Video
+                        li 
+                            a(href=`/users/${loggedInUser._id}`) My Profile
                         li 
                             a(href="/users/edit") Edit Profile
                         li 
@@ -33,3 +36,4 @@ html(lang="en")
                 h3 #{`hello ${loggedInUser.name}`}
         block content
     include partials/footer.pug
+    script(src="/static/js/main.js")
