@@ -1,0 +1,32 @@
+header {
+  display: flex;
+  padding: 20px;
+}
+
+#menubar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+#search-input {
+  background-color: black;
+  border: 0;
+  outline: 0;
+  color: white;
+}
+
+#search-btn {
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+}
+
+.main-icon {
+  color: red;
+}
+.search-btn {
+  color: white;
+}
+.menubar-btn__logo {
+  display: flex;
+}

@@ -1,0 +1,38 @@
+.menubar-left__wrapper {
+  margin-right: 30px;
+}
+
+.menubar-left__icon {
+  font-size: 2em;
+}
+
+.menubar-left__Btn {
+  margin-right: 20px;
+}
+
+.icon {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.1em;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  gap: 5px;
+}
+
+.menubar-left__wide {
+  width: 200px;
+}
+
+.icon-shorts svg {
+  width: 1.3em;
+
+  pointer-events: none;
+  display: block;
+  color: white;
+}
+
+.nono {
+  color: red;
+}

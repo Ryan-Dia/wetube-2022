@@ -1,0 +1,27 @@
+header
+    div#menubar 
+        div.menubar-btn__logo
+            div.menubar-left__Btn 
+                i.fa-solid.fa-bars.fa-2x
+            a.menubar-left__icon(href="/") 
+                i.fab.fa-youtube.main-icon
+                span WeTube
+        div     
+            
+            form(method="GET", action="/search")
+                input#search-input(placeholder="Search by title", name="keyword" ,type="text")
+                button#search-btn(type="submit", value="Search")
+                    i.fa-solid.fa-magnifying-glass.search-btn    
+        div  
+            if loggedIn
+               
+                a(href="/videos/upload") Upload Video
+            
+                a(href=`/users/${loggedInUser._id}`) My Profile
+            
+                a(href="/users/edit") Edit Profile
+            
+                a(href="/logout") Logout
+            else
+            
+                a(href="/login") Login         

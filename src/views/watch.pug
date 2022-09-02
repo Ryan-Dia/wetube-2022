@@ -1,19 +1,21 @@
 extends base.pug
 
-block content 
-    h1 Watch Video
-    video(src=`/${video.fileUrl}`, controls, width="1000px")
-    h2=video.title
-    h3=video.description
-    each hash in video.hashtags
-        li=hash
-    small=video.createdAt
-    div 
-        small Uploaded by 
-            a(href=`/users/${video.owner._id}`)=video.owner.name
-    br
-    if String(video.owner) === String(loggedInUser._id)
-        a(href=`${video.id}/edit`) Edit Video &rarr;
-        br
-        a(href=`${video.id}/delete`) Delete Video &rarr;
-        
+block content
+    div#videoContainer
+        h1 Watch Video
+        video(src=`/${video.fileUrl}`, width="1000px")
+        div#videoControls 
+            button#play play 
+            button#mute Mute 
+            input(type="range", step="0.1",value=0.5,min="0", max="1")#volume
+            div 
+                span#currenTime 00:00
+                span /
+                span#totalTime 00:00
+            div 
+                input(type="range", step="1", value=0, min="0")#timeline
+            div 
+                button#fullScreen Enter Full Screen
+  
+block scripts 
+    script(src="/static/js/videoPlayer.js")
