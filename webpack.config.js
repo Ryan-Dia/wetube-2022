@@ -6,6 +6,7 @@ module.exports = {
     main: "./src/client/js/main.js",
     videoplayer: "./src/client/js/videoPlayer.js",
     menubarLeft: "./src/client/js/menubarLeft.js",
+    recorder: "./src/client/js/recorder.js",
   },
   plugins: [
     new MiniCssExtractPlugin({

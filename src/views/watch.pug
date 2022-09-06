@@ -1,7 +1,7 @@
 extends base.pug
 
 block content
-    div#videoContainer
+    div#videoContainer(data-id=video._id)
         h1 Watch Video
         video(src=`/${video.fileUrl}`, width="1000px")
         div#videoControls 
