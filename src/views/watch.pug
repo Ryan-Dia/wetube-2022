@@ -1,21 +1,22 @@
 extends base.pug
 
 block content
-    div#videoContainer(data-id=video._id)
-        h1 Watch Video
-        video(src=`/${video.fileUrl}`, width="1000px")
-        div#videoControls 
-            button#play play 
-            button#mute Mute 
-            input(type="range", step="0.1",value=0.5,min="0", max="1")#volume
-            div 
-                span#currenTime 00:00
-                span /
-                span#totalTime 00:00
-            div 
-                input(type="range", step="1", value=0, min="0")#timeline
-            div 
-                button#fullScreen Enter Full Screen
+    div.wrapper
+        div#videoContainer.videoWrapper(data-id=video._id)
+            video(src=`/${video.fileUrl}`, width="1000px")
+            div#videoController
+                div#videoController-first 
+                    i.fa-solid.fa-play#playPauseBtn
+                    div 
+                        span#playCurrentTime 00:00
+                        span /
+                        span#playPullTime 00:00
+                input(type="range", step="1", value=0, min="0")#videoTimeRange
+                div#videoController-third
+                    i#volume.fas.fa-volume-up 
+                    input(type="range", step="0.1",value=0.5,min="0", max="1")#volumeRange
+                    button#videoFullScreenBtn Full
+
     if loggedIn 
         div.video__add-comments
             form.video__comment-form#commentForm

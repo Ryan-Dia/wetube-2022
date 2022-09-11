@@ -1,0 +1,40 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.videoWrapper {
+  width: 700px;
+  position: relative;
+  color: black;
+}
+video {
+  width: 100%;
+}
+
+#videoController {
+  position: absolute;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: auto 3fr auto auto;
+  gap: 5px;
+  width: 100%;
+  background-color: white;
+  box-sizing: border-box;
+  padding-left: 5px;
+}
+
+#videoController-first {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+#videoController-third {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}

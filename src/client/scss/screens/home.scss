@@ -1,0 +1,10 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto 5fr auto auto;
+  gap: 20px;
+  & .wrapper > a {
+    min-width: 300px;
+  }
+}

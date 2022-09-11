@@ -5,8 +5,11 @@
 // Components
 @import "./components/header.scss";
 @import "./components/menubar-left.scss";
+@import "./components//videoplayer.scss";
+@import "./components/video.scss";
 // Screens
 @import "./screens/watch.scss";
+@import "./screens/home.scss";
 
 // Defaults
 a {
