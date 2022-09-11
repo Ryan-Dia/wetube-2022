@@ -6,6 +6,7 @@
 @import "./components/header.scss";
 @import "./components/menubar-left.scss";
 // Screens
+@import "./screens/watch.scss";
 
 // Defaults
 a {
@@ -27,4 +28,33 @@ body {
 .wrapper-inner {
   width: 100%;
   height: 100%;
+}
+
+@keyframes goAway {
+  from {
+    transform: none;
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-80px);
+    opacity: 0;
+  }
+}
+
+// forwards를 해줘야 애니메이션 마지막상태를 유지함
+.message {
+  position: absolute;
+  top: 10px;
+  left: 0px;
+  right: 0;
+  margin: 0 auto;
+  max-width: 200px;
+  padding: 20px;
+  border-radius: 10000px;
+  animation: goAway 0.5s ease-in-out forwards;
+  animation-delay: 3s;
+  &.error {
+    background-color: tomato;
+    color: white;
+  }
 }

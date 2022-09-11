@@ -1,9 +1,11 @@
-const startBtn = document.getElementById("startBtn";
+const startBtn = document.getElementById("startBtn");
 
+const handleStart = async () => {
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio: true,
+    video: true,
+  });
+  console.log(stream);
+};
 
-
-const handleStart = async() =>{
-    const stream = await navigator.mediaDevices.getUserMedia({audio:true,video:true})
-}
-
-startBtn.addEventListener("click", handleStart)
+startBtn.addEventListener("click", handleStart);

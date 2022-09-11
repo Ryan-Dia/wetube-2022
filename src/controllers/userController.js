@@ -175,7 +175,9 @@ export const postEdit = async (req, res) => {
 ///////////////////////
 
 export const logout = (req, res) => {
-  req.session.destroy();
+  req.session.user = null;
+  res.locals.loggedInUser = req.session.user;
+  req.session.loggedIn = false;
   return res.redirect("/");
 };
 
@@ -191,10 +193,7 @@ export const postChangePassword = async (req, res) => {
     },
     body: { oldPassword, newPassword, newPasswordConfirmation },
   } = req;
-  console.log(_id);
-  console.log(password);
   const ok = await bcrypt.compare(oldPassword, password);
-  console.log(ok);
   if (!ok) {
     return res.status(400).render("users/change-password", {
       pageTitle: "Change Password",
@@ -211,6 +210,7 @@ export const postChangePassword = async (req, res) => {
   user.password = await User.hashPassword(newPassword);
   await user.save();
   req.session.destroy();
+
   return res.redirect("/login");
 };
 
