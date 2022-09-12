@@ -22,6 +22,16 @@ header
                 a(href="/users/edit") Edit Profile
             
                 a(href="/logout") Logout
+
+                a(href=`/users/${loggedInUser._id}`)
+                    if loggedInUser.avatarUrl === ""
+                        span 🔆 
+                    else
+                        if loggedInUser.socialOnly 
+                            img.header__avatar(src=loggedInUser.avatarUrl)
+                        else 
+                            img.header__avatar(src="/" + loggedInUser.avatarUrl)
             else
-            
-                a(href="/login") Login         
+                a(href="/login") Login 
+
+                a(href="/join").header__btn Join        
