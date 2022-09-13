@@ -15,7 +15,7 @@ export const watch = async (req, res) => {
   const video = await Video.findById(id).populate("owner").populate("comments");
 
   if (!video) return res.render("404", { pageTitle: "Video not found." });
-  return res.render("watch", { pageTitle: video.title, video });
+  return res.render("watch", { pageTitle: video.title, video, id });
 };
 
 ///////////////////////
@@ -36,6 +36,9 @@ export const getEdit = async (req, res) => {
 
 export const postEdit = async (req, res) => {
   const { id } = req.params;
+  const {
+    user: { _id },
+  } = req.session;
   const { title, description, hashtags } = req.body;
   const video = await Video.findById({ _id: id });
   if (!video) return res.render("404", { pageTitle: "Video not found" });
@@ -96,7 +99,10 @@ export const deleteVideo = async (req, res) => {
   const user = await User.findById(_id);
   if (!video)
     return res.status(404).render("404", { pageTitle: "Video not found." });
-  if (String(video.owner) !== String(_id)) return res.status(403).redirect("/");
+  if (String(video.owner) !== String(_id)) {
+    req.flash("error", "Not autohorized");
+    return res.status(403).redirect("/");
+  }
   await Video.findByIdAndDelete(id);
   user.videos.splice(user.videos.indexOf(id), 1);
   user.save();

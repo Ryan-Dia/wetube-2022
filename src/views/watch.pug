@@ -30,9 +30,12 @@ block content
                     span  #{comment.text}
                     if String(comment.owner) === String(loggedInUser._id) 
                         span.video__comment-delete#deleteCommentBtn(data-id=comment._id)(data-videoId=video._id) ❌
+    div 
+        a(href=`${id}/edit`) edit  &rarr;
+        br
+        a(href=`${id}/delete`) delete &rarr;
 
-
+        
 block scripts 
     script(src="/static/js/videoPlayer.js")
     script(src="/static/js/commentSection.js")
-
