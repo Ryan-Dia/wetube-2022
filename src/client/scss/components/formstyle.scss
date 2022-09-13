@@ -1,0 +1,24 @@
+.form-style {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 60vh;
+  & > span {
+    font-size: 50px;
+    margin-bottom: 70px;
+  }
+}
+
+.form-style__form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  & > input {
+    height: 40px;
+    background-color: black;
+    color: aqua;
+    border: solid silver;
+  }
+}
