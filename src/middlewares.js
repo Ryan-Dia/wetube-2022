@@ -9,9 +9,17 @@ const s3 = new aws.S3({
   },
 });
 
-const multerUploader = multerS3({
+const isHeroku = process.env.NODE_ENV === "production";
+
+const s3ImageUploader = multerS3({
   s3: s3,
-  bucket: "wetube--2022",
+  bucket: "wetube--2022/images",
+  acl: "public-read",
+});
+
+const s3VideoUploader = multerS3({
+  s3: s3,
+  bucket: "wetube--2022/videos",
   acl: "public-read",
 });
 
@@ -45,7 +53,7 @@ export const avatarUpload = multer({
   limits: {
     fileSize: 4000000,
   },
-  storage: multerUploader,
+  storage: isHeroku ? s3ImageUploader : undefined,
 });
 
 export const videoUpload = multer({
@@ -53,5 +61,5 @@ export const videoUpload = multer({
   limits: {
     fileSize: 150000000,
   },
-  storage: multerUploader,
+  storage: isHeroku ? s3VideoUploader : undefined,
 });

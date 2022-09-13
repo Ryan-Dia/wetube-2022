@@ -156,11 +156,11 @@ export const postEdit = async (req, res) => {
       emailErrorMessage: emailExists ? "This email is already taken" : 0,
     });
   }
-
+  const isHeroku = process.env.NODE_ENV === "production";
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? file.location : avatarUrl,
+      avatarUrl: file ? (isHeroku ? file.location : file.path) : avatarUrl,
       name,
       email,
       username,
