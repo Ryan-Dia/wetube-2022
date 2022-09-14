@@ -59,6 +59,7 @@ var formatTime = function formatTime(seconds) {
 var handleFullTime = function handleFullTime() {
   playFullTime.innerText = formatTime(Math.floor(video.duration));
   videoTimeRange.max = video.duration;
+  video.play();
 };
 
 var handleTimeUpdate = function handleTimeUpdate() {

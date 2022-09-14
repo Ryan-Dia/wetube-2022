@@ -87,7 +87,8 @@ var watch = /*#__PURE__*/function () {
           case 6:
             return _context2.abrupt("return", res.render("watch", {
               pageTitle: video.title,
-              video: video
+              video: video,
+              id: id
             }));
 
           case 7:
@@ -163,24 +164,25 @@ exports.getEdit = getEdit;
 
 var postEdit = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var id, _req$body, title, description, hashtags, video;
+    var id, _id, _req$body, title, description, hashtags, video;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             id = req.params.id;
+            _id = req.session.user._id;
             _req$body = req.body, title = _req$body.title, description = _req$body.description, hashtags = _req$body.hashtags;
-            _context4.next = 4;
+            _context4.next = 5;
             return _Video["default"].findById({
               _id: id
             });
 
-          case 4:
+          case 5:
             video = _context4.sent;
 
             if (video) {
-              _context4.next = 7;
+              _context4.next = 8;
               break;
             }
 
@@ -188,27 +190,27 @@ var postEdit = /*#__PURE__*/function () {
               pageTitle: "Video not found"
             }));
 
-          case 7:
+          case 8:
             if (!(String(video.owner) !== String(_id))) {
-              _context4.next = 10;
+              _context4.next = 11;
               break;
             }
 
             req.flash("error", "You are not the owner of the video.");
             return _context4.abrupt("return", res.status(403).redirect("/"));
 
-          case 10:
-            _context4.next = 12;
+          case 11:
+            _context4.next = 13;
             return _Video["default"].findByIdAndUpdate(id, {
               title: title,
               description: description,
               hashtags: _Video["default"].formatHashtags(hashtags)
             });
 
-          case 12:
+          case 13:
             return _context4.abrupt("return", res.redirect("/videos/".concat(id)));
 
-          case 13:
+          case 14:
           case "end":
             return _context4.stop();
         }
@@ -234,41 +236,52 @@ exports.getUpload = getUpload;
 
 var postUpload = /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var _id, fileUrl, _req$body2, title, description, hashtags, newVideo, user;
+    var _id, _req$file, location, path, _req$body2, title, description, hashtags, isHeroku, newVideo, user;
 
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _id = req.session.user._id;
-            fileUrl = req.file.path;
+            _req$file = req.file, location = _req$file.location, path = _req$file.path;
             _req$body2 = req.body, title = _req$body2.title, description = _req$body2.description, hashtags = _req$body2.hashtags;
-            _context5.next = 5;
+            isHeroku = process.env.NODE_ENV === "production";
+            _context5.prev = 4;
+            _context5.next = 7;
             return _Video["default"].create({
               title: title,
               description: description,
-              fileUrl: fileUrl,
+              fileUrl: isHeroku ? location : path,
               owner: _id,
               hashtags: _Video["default"].formatHashtags(hashtags)
             });
 
-          case 5:
+          case 7:
             newVideo = _context5.sent;
-            _context5.next = 8;
+            _context5.next = 10;
             return _User["default"].findById(_id);
 
-          case 8:
+          case 10:
             user = _context5.sent;
             user.videos.push(newVideo._id);
             user.save();
             return _context5.abrupt("return", res.redirect("/"));
 
-          case 12:
+          case 16:
+            _context5.prev = 16;
+            _context5.t0 = _context5["catch"](4);
+            console.log(_context5.t0);
+            return _context5.abrupt("return", res.status(400).render("upload", {
+              pageTitle: "Upload Video",
+              errorMessage: _context5.t0._message
+            }));
+
+          case 20:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5);
+    }, _callee5, null, [[4, 16]]);
   }));
 
   return function postUpload(_x9, _x10) {
@@ -311,22 +324,23 @@ var deleteVideo = /*#__PURE__*/function () {
 
           case 10:
             if (!(String(video.owner) !== String(_id))) {
-              _context6.next = 12;
+              _context6.next = 13;
               break;
             }
 
+            req.flash("error", "Not autohorized");
             return _context6.abrupt("return", res.status(403).redirect("/"));
 
-          case 12:
-            _context6.next = 14;
+          case 13:
+            _context6.next = 15;
             return _Video["default"].findByIdAndDelete(id);
 
-          case 14:
+          case 15:
             user.videos.splice(user.videos.indexOf(id), 1);
             user.save();
             return _context6.abrupt("return", res.redirect("/"));
 
-          case 17:
+          case 18:
           case "end":
             return _context6.stop();
         }

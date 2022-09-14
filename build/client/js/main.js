@@ -1,5 +1,5 @@
 "use strict";
 
-require("../scss/styles.scss");
-
 require("regenerator-runtime");
+
+require("../scss/styles.scss");

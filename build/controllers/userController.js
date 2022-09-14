@@ -327,7 +327,7 @@ exports.getEdit = getEdit;
 
 var postEdit = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var _req$session$user, _id, sessionEmail, sessionUsername, _req$body3, name, email, username, location, file, usernameExists, emailExists, updateUser;
+    var _req$session$user, _id, sessionEmail, sessionUsername, _req$body3, name, email, username, location, file, usernameExists, emailExists, isHeroku, updateUser;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
@@ -389,9 +389,10 @@ var postEdit = /*#__PURE__*/function () {
             }));
 
           case 19:
-            _context4.next = 21;
+            isHeroku = process.env.NODE_ENV === "production";
+            _context4.next = 22;
             return _User["default"].findByIdAndUpdate(_id, {
-              avatarUrl: file ? file.path : avatarUrl,
+              avatarUrl: file ? isHeroku ? file.location : file.path : avatarUrl,
               name: name,
               email: email,
               username: username,
@@ -400,12 +401,12 @@ var postEdit = /*#__PURE__*/function () {
               "new": true
             });
 
-          case 21:
+          case 22:
             updateUser = _context4.sent;
             req.session.user = updateUser;
             return _context4.abrupt("return", res.redirect("/users/edit"));
 
-          case 24:
+          case 25:
           case "end":
             return _context4.stop();
         }
