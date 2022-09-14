@@ -10,9 +10,12 @@ header {
 }
 #search-input {
   background-color: black;
-  border: 0;
+  width: 350px;
+  height: 35px;
   outline: 0;
   color: white;
+  border: solid 0.5px gray;
+  border-radius: 15px;
 }
 
 #search-btn {
@@ -33,6 +36,8 @@ header {
 
 #secondButton {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 20px;
 }
 

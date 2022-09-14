@@ -56,6 +56,7 @@ const formatTime = (seconds) =>
 const handleFullTime = () => {
   playFullTime.innerText = formatTime(Math.floor(video.duration));
   videoTimeRange.max = video.duration;
+  video.play();
 };
 
 const handleTimeUpdate = () => {
