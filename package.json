@@ -4,7 +4,7 @@
   "description": "wetube-start",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && forever start -w build/init.js",
+    "start": "npm run build && forever start build/init.js",
     "build": "npm run build:server  && npm run build:assets",
     "build:server": "babel src -d build",
     "build:assets": "webpack --mode=production",
