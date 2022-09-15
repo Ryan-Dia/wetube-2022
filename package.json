@@ -4,7 +4,7 @@
   "description": "wetube-start",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && forever start -w -o ../output.log -e ../error.log  --minUptime 5 --spinSleepTime 5 build/init.js",
+    "start": "npm run build && forever start -w -o ../output.log -e ../error.lo --minUptime 5000 --spinSleepTime 2000 -a build/init.js",
     "build": "npm run build:server  && npm run build:assets",
     "build:server": "babel src -d build",
     "build:assets": "webpack --mode=production",
