@@ -29,7 +29,7 @@ block content
                     i.fa-solid.fa-comment
                     span  #{comment.text}
                     if String(comment.owner) === String(loggedInUser._id) 
-                        span.video__comment-delete#deleteCommentBtn(data-id=comment._id)(data-videoId=video._id) ❌
+                        span.video__comment-delete#deleteCommentBtn(data-id=comment._id,data-videoId=video._id) ❌
     div 
         a(href=`${id}/edit`) edit  &rarr;
         br
