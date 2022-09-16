@@ -156,19 +156,27 @@ export const postEdit = async (req, res) => {
       emailErrorMessage: emailExists ? "This email is already taken" : 0,
     });
   }
-  const updateUser = await User.findByIdAndUpdate(
-    _id,
-    {
-      avatarUrl: file ? file.path : avatarUrl,
-      name,
-      email,
-      username,
-      location,
-    },
-    { new: true }
-  );
-  req.session.user = updateUser;
-  return res.redirect("/users/edit");
+  try {
+    const updateUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        avatarUrl: file ? file.location : avatarUrl,
+        name,
+        email,
+        username,
+        location,
+      },
+      { new: true }
+    );
+    req.session.user = updateUser;
+    return res.redirect("/users/edit");
+  } catch (error) {
+    console.log(error);
+    return res.status(400).render("upload", {
+      pageTitle: "Upload Video",
+      errorMessage: error._message,
+    });
+  }
 };
 
 ///////////////////////
