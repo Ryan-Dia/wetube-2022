@@ -54,7 +54,7 @@ export const avatarUpload = multer({
   limits: {
     fileSize: 4000000,
   },
-  storage: isEc2on ? s3ImageUploader : undefined,
+  storage: s3ImageUploader,
 });
 
 export const videoUpload = multer({
@@ -62,5 +62,5 @@ export const videoUpload = multer({
   limits: {
     fileSize: 150000000,
   },
-  storage: isEc2on ? s3VideoUploader : undefined,
+  storage: s3VideoUploader,
 });
