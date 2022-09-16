@@ -138,7 +138,7 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id, email: sessionEmail, username: sessionUsername },
+      user: { _id, email: sessionEmail, username: sessionUsername, avatarUrl },
     },
     body: { name, email, username, location },
     file,
@@ -156,7 +156,6 @@ export const postEdit = async (req, res) => {
       emailErrorMessage: emailExists ? "This email is already taken" : 0,
     });
   }
-  const isHeroku = process.env.NODE_ENV === "production";
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
