@@ -14,13 +14,15 @@ const isEc2on = process.env.EC2_ON === "activate";
 console.log(isEc2on);
 const s3ImageUploader = multerS3({
   s3: s3,
-  bucket: "wetube--2022" + "/images",
+  bucket: "wetube--2022",
+  key: "images/",
   acl: "public-read",
 });
 
 const s3VideoUploader = multerS3({
   s3: s3,
-  bucket: "wetube--2022" + "/videos",
+  bucket: "wetube--2022",
+  key: "videos/",
   acl: "public-read",
   contentType: multerS3.AUTO_CONTENT_TYPE,
 });
