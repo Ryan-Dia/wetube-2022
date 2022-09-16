@@ -327,13 +327,13 @@ exports.getEdit = getEdit;
 
 var postEdit = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var _req$session$user, _id, sessionEmail, sessionUsername, _req$body3, name, email, username, location, file, usernameExists, emailExists, isHeroku, updateUser;
+    var _req$session$user, _id, sessionEmail, sessionUsername, avatarUrl, _req$body3, name, email, username, location, file, usernameExists, emailExists, updateUser;
 
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _req$session$user = req.session.user, _id = _req$session$user._id, sessionEmail = _req$session$user.email, sessionUsername = _req$session$user.username, _req$body3 = req.body, name = _req$body3.name, email = _req$body3.email, username = _req$body3.username, location = _req$body3.location, file = req.file;
+            _req$session$user = req.session.user, _id = _req$session$user._id, sessionEmail = _req$session$user.email, sessionUsername = _req$session$user.username, avatarUrl = _req$session$user.avatarUrl, _req$body3 = req.body, name = _req$body3.name, email = _req$body3.email, username = _req$body3.username, location = _req$body3.location, file = req.file;
 
             if (!(username != sessionUsername)) {
               _context4.next = 7;
@@ -389,8 +389,9 @@ var postEdit = /*#__PURE__*/function () {
             }));
 
           case 19:
-            isHeroku = process.env.NODE_ENV === "production";
-            _context4.next = 22;
+            console.log(file);
+            _context4.prev = 20;
+            _context4.next = 23;
             return _User["default"].findByIdAndUpdate(_id, {
               avatarUrl: file ? file.path : avatarUrl,
               name: name,
@@ -401,17 +402,26 @@ var postEdit = /*#__PURE__*/function () {
               "new": true
             });
 
-          case 22:
+          case 23:
             updateUser = _context4.sent;
             req.session.user = updateUser;
             return _context4.abrupt("return", res.redirect("/users/edit"));
 
-          case 25:
+          case 28:
+            _context4.prev = 28;
+            _context4.t2 = _context4["catch"](20);
+            console.log(_context4.t2);
+            return _context4.abrupt("return", res.status(400).render("upload", {
+              pageTitle: "Upload Video",
+              errorMessage: _context4.t2._message
+            }));
+
+          case 32:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4);
+    }, _callee4, null, [[20, 28]]);
   }));
 
   return function postEdit(_x7, _x8) {
