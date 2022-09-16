@@ -392,7 +392,7 @@ var postEdit = /*#__PURE__*/function () {
             isHeroku = process.env.NODE_ENV === "production";
             _context4.next = 22;
             return _User["default"].findByIdAndUpdate(_id, {
-              avatarUrl: file ? isHeroku ? file.location : file.path : avatarUrl,
+              avatarUrl: file ? file.path : avatarUrl,
               name: name,
               email: email,
               username: username,

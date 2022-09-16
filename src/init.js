@@ -6,9 +6,14 @@ import "./models/User";
 import "./models/Comment";
 import app from "./server";
 
-const PORT = process.env.PORT || 80;
+const PORT = 80;
+
+if (PORT === 80) {
+  process.env.EC2_ON = "activate";
+}
 
 const handleListening = () =>
   console.log(`✅ Server listening on port http://localhost:${PORT}`);
+console.log(process.env.EC2_ON);
 
 app.listen(PORT, handleListening);

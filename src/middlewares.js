@@ -9,18 +9,19 @@ const s3 = new aws.S3({
   },
 });
 
-const isHeroku = process.env.NODE_ENV === "production";
-
+const isEc2on = process.env.EC2_ON === "activate";
+console.log(isEc2on);
 const s3ImageUploader = multerS3({
   s3: s3,
-  bucket: "wetube--2022/images",
+  bucket: "wetube-2022/images",
   acl: "public-read",
 });
 
 const s3VideoUploader = multerS3({
   s3: s3,
-  bucket: "wetube--2022/videos",
+  bucket: "wetube-2022/videos",
   acl: "public-read",
+  contentType: multerS3.AUTO_CONTENT_TYPE,
 });
 
 export const localsMiddleware = (req, res, next) => {
@@ -53,7 +54,7 @@ export const avatarUpload = multer({
   limits: {
     fileSize: 4000000,
   },
-  storage: isHeroku ? s3ImageUploader : undefined,
+  storage: isEc2on ? s3ImageUploader : undefined,
 });
 
 export const videoUpload = multer({
@@ -61,5 +62,5 @@ export const videoUpload = multer({
   limits: {
     fileSize: 150000000,
   },
-  storage: isHeroku ? s3VideoUploader : undefined,
+  storage: isEc2on ? s3VideoUploader : undefined,
 });
