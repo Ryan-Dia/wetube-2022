@@ -22,8 +22,6 @@
   },
   "homepage": "https://github.com/RyanDeclan/wetube-2022#readme",
   "dependencies": {
-    "@ffmpeg/core": "^0.8.5",
-    "@ffmpeg/ffmpeg": "^0.9.7",
     "aws-sdk": "^2.1213.0",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.6.0",
@@ -42,7 +40,6 @@
     "regenerator-runtime": "^0.13.9"
   },
   "devDependencies": {
-    "@babel/cli": "^7.18.10",
     "@babel/core": "^7.18.10",
     "@babel/node": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
