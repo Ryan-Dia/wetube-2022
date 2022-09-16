@@ -1,6 +1,7 @@
 import multer from "multer";
 import multerS3 from "multer-s3";
-import { S3Client } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { async } from "regenerator-runtime";
 
 const s3 = new S3Client({
   region: "ap-northeast-2",
@@ -12,20 +13,43 @@ const s3 = new S3Client({
 
 const isEc2on = process.env.EC2_ON === "activate";
 console.log(isEc2on);
-const s3ImageUploader = multerS3({
+/* const s3ImageUploader = multerS3({
   s3: s3,
   bucket: "wetube--2022",
   key: "images/",
   acl: "public-read",
+}); */
+
+const s3ImageUploader = new PutObjectCommand({
+  Bucket: "wetube--2022",
+  Key: "imges/",
+  ACL: "bucket-owner-full-control",
+  ContentLength: 42,
 });
 
-const s3VideoUploader = multerS3({
+const s3VideoUploader = new PutObjectCommand({
+  Bucket: "wetube--2022",
+  Key: "videos/",
+  ACL: "bucket-owner-full-control",
+  ContentLength: 42,
+});
+
+async () => {
+  try {
+    await s3.send(s3ImageUploader);
+    await s3.send(s3VideoUploader);
+  } catch (err) {
+    console.error(err, err.stack);
+  }
+};
+
+/* const s3VideoUploader = multerS3({
   s3: s3,
   bucket: "wetube--2022",
   key: "videos/",
   acl: "public-read",
   contentType: multerS3.AUTO_CONTENT_TYPE,
-});
+}); */
 
 export const localsMiddleware = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
