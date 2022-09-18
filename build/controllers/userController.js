@@ -393,7 +393,7 @@ var postEdit = /*#__PURE__*/function () {
             _context4.prev = 20;
             _context4.next = 23;
             return _User["default"].findByIdAndUpdate(_id, {
-              avatarUrl: file ? file.path : avatarUrl,
+              avatarUrl: file ? file.location : avatarUrl,
               name: name,
               email: email,
               username: username,

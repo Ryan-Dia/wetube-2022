@@ -246,42 +246,43 @@ var postUpload = /*#__PURE__*/function () {
             _req$file = req.file, location = _req$file.location, path = _req$file.path;
             _req$body2 = req.body, title = _req$body2.title, description = _req$body2.description, hashtags = _req$body2.hashtags;
             isHeroku = process.env.NODE_ENV === "production";
-            _context5.prev = 4;
-            _context5.next = 7;
+            console.log(location, path);
+            _context5.prev = 5;
+            _context5.next = 8;
             return _Video["default"].create({
               title: title,
               description: description,
-              fileUrl: isHeroku ? location : path,
+              fileUrl: location,
               owner: _id,
               hashtags: _Video["default"].formatHashtags(hashtags)
             });
 
-          case 7:
+          case 8:
             newVideo = _context5.sent;
-            _context5.next = 10;
+            _context5.next = 11;
             return _User["default"].findById(_id);
 
-          case 10:
+          case 11:
             user = _context5.sent;
             user.videos.push(newVideo._id);
             user.save();
             return _context5.abrupt("return", res.redirect("/"));
 
-          case 16:
-            _context5.prev = 16;
-            _context5.t0 = _context5["catch"](4);
+          case 17:
+            _context5.prev = 17;
+            _context5.t0 = _context5["catch"](5);
             console.log(_context5.t0);
             return _context5.abrupt("return", res.status(400).render("upload", {
               pageTitle: "Upload Video",
               errorMessage: _context5.t0._message
             }));
 
-          case 20:
+          case 21:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[4, 16]]);
+    }, _callee5, null, [[5, 17]]);
   }));
 
   return function postUpload(_x9, _x10) {
